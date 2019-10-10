@@ -2,13 +2,13 @@ import card.Card;
 import card.Card.Color;
 import card.Card.Mark;
 
-import java.awt.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Deck {
-    List<Card> deck;
-    int size;
+    private List<Card> deck;
+    private int size;
     Deck(){
         deck = new ArrayList<>();
         for (Color c : Color.values()){
@@ -39,7 +39,7 @@ public class Deck {
         size = deck.size();
     }
 
-    void add(Card card){
+    private void add(Card card){
         deck.add(card);
     }
 
@@ -48,7 +48,7 @@ public class Deck {
         return deck.get(size);
     }
 
-    public int getSize() {
+    int getSize() {
         return size;
     }
 
