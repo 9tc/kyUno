@@ -1,7 +1,3 @@
-import card.Card;
-import card.Card.Color;
-import card.Card.Mark;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -24,14 +20,14 @@ public class Deck {
                     add(new Card(c, Mark.Seven));
                     add(new Card(c, Mark.Eight));
                     add(new Card(c, Mark.Nine));
-                    add(new Card(c, Mark.DrawTwo));
-                    add(new Card(c, Mark.Reverse));
-                    add(new Card(c, Mark.Skip));
+                    add(new Card(c, Mark.DrawTwo, new DrawEvent(2)));
+                    add(new Card(c, Mark.Reverse, new ReverseEvent()));
+                    add(new Card(c, Mark.Skip, new SkipEvent()));
                 }
             }else{
                 for (int i = 0; i < 4; i++) {
-                    add(new Card(c, Mark.Wild));
-                    add(new Card(c, Mark.WildDrawFour));
+                    add(new Card(c, Mark.Wild, new WildEvent()));
+                    add(new Card(c, Mark.WildDrawFour, new WildEvent(new DrawEvent(4))));
                 }
             }
         }
@@ -55,4 +51,6 @@ public class Deck {
     public boolean isEmpty(){
         return (size == 0);
     }
+
+
 }

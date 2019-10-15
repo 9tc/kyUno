@@ -1,5 +1,3 @@
-import card.Card;
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Scanner;
@@ -11,6 +9,8 @@ class Game {
     private Scanner sc = new Scanner(System.in);
     private int turn;
     private Player currentPlayer;
+    private boolean isReversed;
+
     Game(int playerCount, int aiCount){
         deck = new Deck();
         turn = 0;
@@ -28,7 +28,7 @@ class Game {
 
     void run() {
         setUp();
-        while (checkHand() || deck.getSize() <= 0){
+        while (checkHand() || !deck.isEmpty()){
             turn++;
             System.out.println(turn + "ターン目 " + currentPlayer.getName() +"のターンです [Field : "+ fieldCard.toString() +"]");
 
@@ -49,13 +49,43 @@ class Game {
                 if (i == -1) {
                     currentPlayer.getHand().add(deck.draw());
                     System.out.println("Success!!" + currentPlayer.getHand().get(currentPlayer.getHand().getSize() - 1) + "をひきました\n");
+                    currentPlayer = currentPlayer.getNextPlayer();
                 }else{
-                    fieldCard = currentPlayer.getHand().play(i);
+                    Card c = currentPlayer.getHand().play(i);
+                    c.getEvent().onPlay(c, currentPlayer, deck);
+                    fieldCard = c.getEvent().getCard();
+                    if(c.getMark().equals(Mark.Reverse)) {
+                        reverseTask(isReversed);
+                        isReversed = !isReversed;
+                    }
+                    currentPlayer = c.getEvent().getNextPlayer();
+                    deck = c.getEvent().getDeck();
+
+
                     System.out.println("Success! \n");
                 }
-                currentPlayer = currentPlayer.getNextPlayer();
+
             }
         }
+
+        //TODO
+    }
+
+    private void reverseTask(boolean isReversed) {
+        if (isReversed){
+            for (int i = 0; i < player.length - 1; i++){
+                player[i].setNextPlayer(player[i + 1]);
+            }
+            player[player.length - 1].setNextPlayer(player[0]);
+        }else {
+            for (int i = 0; i < player.length - 1; i++) {
+                player[i + 1].setNextPlayer(player[i]);
+            }
+            player[0].setNextPlayer(player[player.length - 1]);
+        }
+
+        System.out.print("Reversed!  ");
+
 
     }
 
@@ -74,7 +104,7 @@ class Game {
         }
         do {
             fieldCard = deck.draw();
-        }while (fieldCard.getColor() == Card.Color.Black);
+        }while (fieldCard.getColor() == Color.Black);
 
         System.out.println();
         for (Player p : player){
@@ -87,5 +117,13 @@ class Game {
         }
         player[player.length - 1].setNextPlayer(player[0]);
         currentPlayer = player[0];
+    }
+
+    public Player getCurrentPlayer() {
+        return currentPlayer;
+    }
+
+    public Card getFieldCard() {
+        return fieldCard;
     }
 }
