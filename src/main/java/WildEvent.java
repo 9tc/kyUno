@@ -18,16 +18,19 @@ public class WildEvent implements IEvent {
         this.c = c;
         p = currentPlayer;
         this.deck = deck;
-
-        System.out.print("(Input) Select Color(1 = Red, 2 = Blue, 3 = Green, 4 = Yellow)");
         int i = -1;
-        while (i == -1){
-            String tmp = sc.nextLine();
-            if (tmp.matches("[1-4]")){
-                i = Integer.parseInt(tmp);
-            }else{
-                System.out.print("(Input)不正 : ");
+        if (!p.isAI()) {
+            System.out.print("(Input) Select Color(1 = Red, 2 = Blue, 3 = Green, 4 = Yellow)");
+            while (i == -1) {
+                String tmp = sc.nextLine();
+                if (tmp.matches("[1-4]")) {
+                    i = Integer.parseInt(tmp);
+                } else {
+                    System.out.print("(Input)不正 : ");
+                }
             }
+        }else{
+            i = 1 + (int)(Math.random() * 4);
         }
         switch (i){
             case 1: c.setColor(Color.Red); break;
