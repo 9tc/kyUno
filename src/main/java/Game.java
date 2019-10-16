@@ -1,6 +1,4 @@
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Scanner;
+import java.util.*;
 
 class Game {
     private Player[] player;
@@ -68,7 +66,22 @@ class Game {
             }
         }
 
-        //TODO
+        System.out.println("\n||||ゲーム終了||||\n");
+        HashMap h = new HashMap();
+        for (Player p : player){
+            h.put(p.getName(), p.getHand().getScore());
+        }
+        List<Map.Entry<String, Integer>> list_entries = new ArrayList<Map.Entry<String, Integer>>(h.entrySet());
+
+        Collections.sort(list_entries, Comparator.comparing(Map.Entry::getValue));
+
+        System.out.println("結果");
+        int i = 1;
+        for(Map.Entry<String, Integer> entry : list_entries) {
+            System.out.println(i++ + "位: " + entry.getKey() + " : " + entry.getValue()+ "点");
+        }
+
+
     }
 
     private void reverseTask(boolean isReversed) {

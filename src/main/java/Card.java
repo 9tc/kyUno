@@ -26,7 +26,24 @@ public class Card {
     }
 
     public int getCardScore(){
-        return 1; //TODO
+        switch (mark){
+            case One: return 1;
+            case Two: return 2;
+            case Three: return 3;
+            case Four: return 4;
+            case Five: return 5;
+            case Six: return 6;
+            case Seven: return 7;
+            case Eight: return 8;
+            case Nine: return 9;
+            case Zero: return 0;
+            case DrawTwo:
+            case Skip:
+            case Reverse: return 20;
+            case Wild:
+            case WildDrawFour: return 50;
+        }
+        return 0;
     }
 
     public boolean isDiscardable(Card placedCard){
