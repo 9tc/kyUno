@@ -17,7 +17,8 @@ public class DrawEvent implements IEvent {
         for (int i = 0; i < drawCount; i++){
             Card tmp = deck.draw();
             p.getNextPlayer().getHand().add(tmp);
-            if (!p.isAI())System.out.println(tmp.toString() + "を引きました(" + (i + 1) + "/" + drawCount + ")");
+            if (!p.getNextPlayer().isAI()) System.out.println(p.getNextPlayer().getName() + "が" + tmp.toString() + "を引きました(" + (i + 1) + "/" + drawCount + ")");
+            else System.out.println(p.getNextPlayer().getName() + "がカードを1枚引きました(" + (i + 1) + "/" + drawCount + ")");
         }
     }
 

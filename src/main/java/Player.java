@@ -1,12 +1,12 @@
 class Player {
-    private boolean isAI;
+    private int aiLevel;
     private Hand hand;
     private String name;
     private Player nextPlayer;
 
-    Player(String name, boolean isAI){
+    Player(String name, int aiLevel){
         this.name = name;
-        this.isAI = isAI;
+        this.aiLevel = aiLevel;
         hand = new Hand();
     }
 
@@ -15,7 +15,7 @@ class Player {
     }
 
     boolean isAI() {
-        return isAI;
+        return aiLevel != 0;
     }
 
     String getName() {

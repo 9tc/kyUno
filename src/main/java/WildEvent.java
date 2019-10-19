@@ -20,7 +20,7 @@ public class WildEvent implements IEvent {
         this.deck = deck;
         int i = -1;
         if (!p.isAI()) {
-            System.out.print("(Input) Select Color(1 = Red, 2 = Blue, 3 = Green, 4 = Yellow)");
+            System.out.print("(Input) 色を選んでください (1 = Red, 2 = Blue, 3 = Green, 4 = Yellow) : ");
             while (i == -1) {
                 String tmp = sc.nextLine();
                 if (tmp.matches("[1-4]")) {
