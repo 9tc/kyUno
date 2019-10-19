@@ -10,8 +10,6 @@ class Game {
     private boolean isReversed;
 
     Game(int playerCount, int aiCount){
-        deck = new Deck();
-        turn = 0;
         player = new Player[playerCount + aiCount];
         for (int i = 0; i < playerCount; i++){
             System.out.print("(Input) Player" + (i+1) + "の名前 : ");
@@ -31,12 +29,11 @@ class Game {
             }
             player[i + playerCount] = new Player("AI[" + (i + 1) + "]", t);
         }
-        Collections.shuffle(Arrays.asList(player));
     }
 
     void run() {
         setUp();
-        while (checkHand() || !deck.isEmpty()){
+        while (checkHand() && !deck.isEmpty()){
             turn++;
             System.out.println(turn + "ターン目 " + currentPlayer.getName() +"のターンです [Field : "+ fieldCard.toString() +"]");
 
@@ -140,6 +137,9 @@ class Game {
     }
 
     private void setUp() {
+        turn = 0;
+        deck = new Deck();
+        Collections.shuffle(Arrays.asList(player));
         for (Player p : player){
             for (int i = 0; i < 7; i++){
                 p.getHand().add(deck.draw());

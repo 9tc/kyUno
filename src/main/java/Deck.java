@@ -41,6 +41,7 @@ public class Deck {
 
     Card draw(){
         size--;
+        if (size < 0) return new Card(Color.Red, Mark.Zero);
         return deck.get(size);
     }
 
