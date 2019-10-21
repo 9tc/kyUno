@@ -33,7 +33,7 @@ class Game {
 
     void run() {
         setUp();
-        while (checkHand() && checkDeck()){
+        while (!checkAllPlayerHandsIsEmpty() && !checkDeckIsEmpty()){
             turn++;
             System.out.println(turn + "ターン目 " + currentPlayer.getName() +"のターンです [Field : "+ fieldCard.toString() +"]");
 
@@ -95,12 +95,15 @@ class Game {
         }
 
         System.out.println("\n||||ゲーム終了||||\n");
+        showResult(player);
+    }
+
+    private void showResult(Player[] player) {
         HashMap h = new HashMap();
         for (Player p : player){
             h.put(p.getName(), p.getHand().getScore());
         }
         List<Map.Entry<String, Integer>> list_entries = new ArrayList<Map.Entry<String, Integer>>(h.entrySet());
-
         Collections.sort(list_entries, Comparator.comparing(Map.Entry::getValue));
 
         System.out.println("結果");
@@ -108,14 +111,13 @@ class Game {
         for(Map.Entry<String, Integer> entry : list_entries) {
             System.out.println(i++ + "位: " + entry.getKey() + " : " + entry.getValue()+ "点");
         }
-
     }
 
-    private boolean checkDeck() {
+    private boolean checkDeckIsEmpty() {
         if (deck.isEmpty()){
             System.out.println("デッキが0枚になったためゲームを終了します");
-            return false;
-        }else return true;
+            return true;
+        }else return false;
     }
 
     private void reverseTask(boolean isReversed) {
@@ -136,14 +138,14 @@ class Game {
 
     }
 
-    private boolean checkHand(){
+    private boolean checkAllPlayerHandsIsEmpty(){
         for (Player p: player){
             if(p.getHand().getSize() == 0) {
                 System.out.println("手札が0枚のプレイヤーが出たためゲームを終了します");
-                return false;
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
     private void setUp() {
@@ -170,13 +172,5 @@ class Game {
         }
         player[player.length - 1].setNextPlayer(player[0]);
         currentPlayer = player[0];
-    }
-
-    public Player getCurrentPlayer() {
-        return currentPlayer;
-    }
-
-    public Card getFieldCard() {
-        return fieldCard;
     }
 }
