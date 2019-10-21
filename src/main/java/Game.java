@@ -33,7 +33,7 @@ class Game {
 
     void run() {
         setUp();
-        while (checkHand() && !deck.isEmpty()){
+        while (checkHand() && checkDeck()){
             turn++;
             System.out.println(turn + "ターン目 " + currentPlayer.getName() +"のターンです [Field : "+ fieldCard.toString() +"]");
 
@@ -111,6 +111,13 @@ class Game {
 
     }
 
+    private boolean checkDeck() {
+        if (deck.isEmpty()){
+            System.out.println("デッキが0枚になったためゲームを終了します");
+            return false;
+        }else return true;
+    }
+
     private void reverseTask(boolean isReversed) {
         if (isReversed){
             for (int i = 0; i < player.length - 1; i++){
@@ -131,7 +138,10 @@ class Game {
 
     private boolean checkHand(){
         for (Player p: player){
-            if(p.getHand().getSize() == 0) return false;
+            if(p.getHand().getSize() == 0) {
+                System.out.println("手札が0枚のプレイヤーが出たためゲームを終了します");
+                return false;
+            }
         }
         return true;
     }
