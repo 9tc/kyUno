@@ -3,6 +3,7 @@ import java.util.*;
 class Game {
     private Player[] player;
     private Deck deck;
+    private List<Card> graveyard;
     private Card fieldCard;
     private Scanner sc = new Scanner(System.in);
     private int turn;
@@ -56,6 +57,7 @@ class Game {
                     System.out.println(currentPlayer.getHand().get(currentPlayer.getHand().getSize() - 1) + "をひきました\n");
                     currentPlayer = currentPlayer.getNextPlayer();
                 }else{
+                    graveyard.add(fieldCard);
                     Card c = currentPlayer.getHand().play(i);
                     c.getEvent().onPlay(c, currentPlayer, deck);
                     fieldCard = c.getEvent().getCard();
@@ -71,6 +73,7 @@ class Game {
                 Boolean placed = false;
                 for (int i = 0; i < currentPlayer.getHand().getSize(); i++){
                     if (currentPlayer.getHand().get(i).isDiscardable(fieldCard)){
+                        graveyard.add(fieldCard);
                         Card c = currentPlayer.getHand().play(i);
                         c.getEvent().onPlay(c, currentPlayer, deck);
                         fieldCard = c.getEvent().getCard();
@@ -149,6 +152,7 @@ class Game {
     }
 
     private void setUp() {
+        graveyard = new ArrayList<>();
         turn = 0;
         deck = new Deck();
         Collections.shuffle(Arrays.asList(player));
