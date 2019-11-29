@@ -3,6 +3,7 @@ import java.util.*;
 class Game {
     private Player[] player;
     private Deck deck;
+    private List<Card> graveyard;
     private Card fieldCard;
     private Scanner sc = new Scanner(System.in);
     private int turn;
@@ -24,7 +25,7 @@ class Game {
                 if (tmp.matches("[1-2]")){
                     t = Integer.parseInt(tmp);
                 }else{
-                    System.out.print("(Input)不正 : ");
+                    System.out.print("(Input) 不正 : ");
                 }
             }
             player[i + playerCount] = new Player("AI[" + (i + 1) + "]", t);
@@ -47,7 +48,7 @@ class Game {
                             ((Integer.parseInt(tmp) == 0) || currentPlayer.getHand().get(Integer.parseInt(tmp) - 1).isDiscardable(fieldCard))){
                         i = Integer.parseInt(tmp);
                     }else{
-                        System.out.print("(Input)不正 : ");
+                        System.out.print("(Input) 不正 : ");
                     }
                 }
                 i--;
@@ -56,6 +57,7 @@ class Game {
                     System.out.println(currentPlayer.getHand().get(currentPlayer.getHand().getSize() - 1) + "をひきました\n");
                     currentPlayer = currentPlayer.getNextPlayer();
                 }else{
+                    graveyard.add(fieldCard);
                     Card c = currentPlayer.getHand().play(i);
                     c.getEvent().onPlay(c, currentPlayer, deck);
                     fieldCard = c.getEvent().getCard();
@@ -64,6 +66,38 @@ class Game {
                         isReversed = !isReversed;
                     }
                     if (currentPlayer.getHand().getSize() == 1)System.out.println(currentPlayer.getName() + " -> UNO!!");
+                    System.out.print("(Input) カードを重ねますか?(Yes:1 No:0): ");
+                    while (sc.nextLine().equals("1")){
+                        System.out.println(currentPlayer.getHand().toString());
+                        System.out.print("(Input) 出すカードの番号(カードを出さない:0) : ");
+                        int il = -1;
+                        while (il == -1){
+                            String tmp = sc.nextLine();
+                            if (tmp.matches("[0-9]+") && (Integer.parseInt(tmp) <= currentPlayer.getHand().getSize()) &&
+                                    ((Integer.parseInt(tmp) == 0) ||
+                                            (currentPlayer.getHand().get(Integer.parseInt(tmp) - 1).isNumber()&&
+                                            currentPlayer.getHand().get(Integer.parseInt(tmp) - 1).getMark().equals(fieldCard.getMark())&&
+                                            currentPlayer.getHand().get(Integer.parseInt(tmp) - 1).getColor().equals(fieldCard.getColor())))){
+                                il = Integer.parseInt(tmp);
+                            }else{
+                                System.out.print("(Input) 不正 : ");
+                            }
+                        }
+                        if (il == 0)System.out.println("ターンを終了します");
+                        else{
+                            il--;
+                            graveyard.add(fieldCard);
+                            c = currentPlayer.getHand().play(i);
+                            c.getEvent().onPlay(c, currentPlayer, deck);
+                            fieldCard = c.getEvent().getCard();
+                            if(c.getMark().equals(Mark.Reverse)) {
+                                reverseTask(isReversed);
+                                isReversed = !isReversed;
+                            }
+                            if (currentPlayer.getHand().getSize() == 1)System.out.println(currentPlayer.getName() + " -> UNO!!");
+                            System.out.print("(Input) さらにカードを重ねますか?(Yes:1 No:0): ");
+                        }
+                    }
                     currentPlayer = c.getEvent().getNextPlayer();
                     deck = c.getEvent().getDeck();
                 }
@@ -71,6 +105,7 @@ class Game {
                 Boolean placed = false;
                 for (int i = 0; i < currentPlayer.getHand().getSize(); i++){
                     if (currentPlayer.getHand().get(i).isDiscardable(fieldCard)){
+                        graveyard.add(fieldCard);
                         Card c = currentPlayer.getHand().play(i);
                         c.getEvent().onPlay(c, currentPlayer, deck);
                         fieldCard = c.getEvent().getCard();
@@ -149,6 +184,7 @@ class Game {
     }
 
     private void setUp() {
+        graveyard = new ArrayList<>();
         turn = 0;
         deck = new Deck();
         Collections.shuffle(Arrays.asList(player));

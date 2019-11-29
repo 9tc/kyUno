@@ -1,3 +1,4 @@
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -32,6 +33,12 @@ public class Deck {
             }
         }
         Collections.shuffle(deck);
+        size = deck.size();
+    }
+
+    Deck(ArrayList deckSource){
+        Collections.shuffle(deckSource);
+        deck = deckSource;
         size = deck.size();
     }
 
