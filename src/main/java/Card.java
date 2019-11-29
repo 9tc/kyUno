@@ -58,4 +58,15 @@ public class Card {
     public IEvent getEvent() {
         return event;
     }
+
+    public boolean isNumber() {
+        switch (mark){
+            case DrawTwo:
+            case Skip:
+            case Reverse:
+            case Wild:
+            case WildDrawFour: return false;
+        }
+        return true;
+    }
 }

@@ -2,7 +2,8 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args){
-        Game g = new Game(0,7);
+        Game g = new Game(2,0);
+
         Scanner sc = new Scanner(System.in);
         do {
             g.run();
