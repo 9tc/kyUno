@@ -13,6 +13,6 @@ public enum Mark {
     Skip,
     DrawTwo,
     Wild,
-    WildDrawFour
+    WildDrawFour;
 }
     

@@ -95,7 +95,8 @@ class Game {
                                 isReversed = !isReversed;
                             }
                             if (currentPlayer.getHand().getSize() == 1)System.out.println(currentPlayer.getName() + " -> UNO!!");
-                            System.out.print("(Input) さらにカードを重ねますか?(Yes:1 No:0): ");
+                            if (fieldCard.isNumber())System.out.print("(Input) さらにカードを重ねますか?(Yes:1 No:0): ");
+                            else break;
                         }
                     }
                     currentPlayer = c.getEvent().getNextPlayer();
